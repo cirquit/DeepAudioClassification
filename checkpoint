@@ -1,0 +1,2 @@
+model_checkpoint_path: "/home/rewrite/Documents/github-repos/DeepAudioClassification/musicDNN.tflearn"
+all_model_checkpoint_paths: "/home/rewrite/Documents/github-repos/DeepAudioClassification/musicDNN.tflearn"
