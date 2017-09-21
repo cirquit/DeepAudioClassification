@@ -1,5 +1,4 @@
 sox
 tensorflow
-tflearn
 h5py
 scikit-learn

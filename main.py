@@ -73,8 +73,8 @@ if "train-more" in args.mode:
 	model.load('musicDNN.tflearn')
 	print("    Weights loaded! ✅")
 
-    print("[+] Training the model...")
-    model.fit(train_X, train_y, n_epoch=nbEpoch, batch_size=batchSize, shuffle=True, validation_set=(validation_X, validation_y), snapshot_step=100, show_metric=True, run_id=run_i
+        print("[+] Training the model...")
+        model.fit(train_X, train_y, n_epoch=nbEpoch, batch_size=batchSize, shuffle=True, validation_set=(validation_X, validation_y), snapshot_step=100, show_metric=True, run_id=run_i
 	print("    Model trained! ✅")
 
 	#Save trained model

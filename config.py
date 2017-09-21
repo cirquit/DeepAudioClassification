@@ -16,6 +16,6 @@ validationRatio = 0.3
 testRatio = 0.1
 
 #Model parameters
-batchSize = 100
+batchSize = 50
 learningRate = 0.001
 nbEpoch = 200
