@@ -1,4 +1,3 @@
-sox
 tensorflow
 h5py
 scikit-learn

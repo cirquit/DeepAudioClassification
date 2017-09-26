@@ -49,7 +49,7 @@ def createClassSpectrogram(filename,classname):
 
 	filepath = rawDataPath + classname + "/" + filename
 
-
+	print(filepath)
 	# if isMono(filepath):
 	# 	command = "cp '{}' '/tmp/{}.wav'".format(filepath, filename)
 	# else:

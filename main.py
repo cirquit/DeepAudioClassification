@@ -4,6 +4,8 @@ import string
 import os
 import sys
 import numpy as np
+import tensorflow as tf
+
 
 from model import createModel
 from datasetTools import getDataset
@@ -14,6 +16,7 @@ from config import nbEpoch
 from config import validationRatio, testRatio
 from config import sliceSize
 from config import spectrogramsPath
+from config import checkpoint_path
 
 from songToData import createSlicesFromAudio
 
@@ -34,13 +37,28 @@ if "slice" in args.mode:
 	createSlicesFromAudio()
 	sys.exit()
 
+
+# os.environ["CUDA_DEVICE_ORDER"]="PCI_BUS_ID"
+# os.environ["CUDA_VISIBLE_DEVICES"]="1"
+
+tf.GraphKeys.VARIABLES = tf.GraphKeys.GLOBAL_VARIABLES
+
 #List genres
 # genres = os.listdir(slicesPath)
 genres = next(os.walk(spectrogramsPath))[1] # get all directories
 nbClasses = len(genres)
 
-#Create model 
-model = createModel(nbClasses, sliceSize)
+#Create model
+config = tf.ConfigProto(allow_soft_placement=True) # without this, tflearn does not work because it can't use GPU accelleration...
+sess = tf.Session(config = config)
+saver = tf.train.Saver();
+
+model = createModel(nbClasses, sliceSize, sess)
+
+init = tf.global_variables_initializer()
+sess.run(init)
+saver.save(sess, 'models/model.ckpt', 50)
+
 
 if "train" in args.mode:
 
@@ -52,7 +70,8 @@ if "train" in args.mode:
 
 	#Train the model
 	print("[+] Training the model...")
-	model.fit(train_X, train_y, n_epoch=nbEpoch, batch_size=batchSize, shuffle=True, validation_set=(validation_X, validation_y), snapshot_step=100, show_metric=True, run_id=run_id)
+
+	model.fit(train_X, train_y, n_epoch=nbEpoch, batch_size=batchSize, shuffle=True, validation_set=(validation_X, validation_y), snapshot_step=50, show_metric=True, run_id=run_id)
 	print("    Model trained! ✅")
 
 	#Save trained model
@@ -74,7 +93,7 @@ if "train-more" in args.mode:
 	print("    Weights loaded! ✅")
 
         print("[+] Training the model...")
-        model.fit(train_X, train_y, n_epoch=nbEpoch, batch_size=batchSize, shuffle=True, validation_set=(validation_X, validation_y), snapshot_step=100, show_metric=True, run_id=run_i
+        model.fit(train_X, train_y, n_epoch=nbEpoch, batch_size=batchSize, shuffle=True, validation_set=(validation_X, validation_y), snapshot_step=100, show_metric=True, run_id=run_i)
 	print("    Model trained! ✅")
 
 	#Save trained model

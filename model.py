@@ -7,7 +7,7 @@ from tflearn.layers.conv import conv_2d, max_pool_2d
 from tflearn.layers.core import input_data, dropout, fully_connected
 from tflearn.layers.estimator import regression
 
-def createModel(nbClasses,imageSize):
+def createModel(nbClasses,imageSize, sess=None):
 	print("[+] Creating model...")
 	convnet = input_data(shape=[None, imageSize, imageSize, 1], name='input')
 
@@ -29,6 +29,6 @@ def createModel(nbClasses,imageSize):
 	convnet = fully_connected(convnet, nbClasses, activation='softmax')
 	convnet = regression(convnet, optimizer='rmsprop', loss='categorical_crossentropy')
 
-	model = tflearn.DNN(convnet, tensorboard_verbose=3)
+	model = tflearn.DNN(convnet, tensorboard_verbose=3, session=sess)
 	print("    Model created! ✅")
 	return model
